@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI for Generating Comic Book for a Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 40px;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .spinner {
+            display: none;
+            margin: 20px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .output {
+            margin-top: 30px;
+        }
+        .comic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .comic-scene {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 76%;
+            margin: auto;
+            margin-bottom: 39px !important;
+           
+        }
+        .comic-scene h4 {
+            color: #111811;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .image {
+            max-width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>AI for Generating Comic Book for a Improvement  Project</h1>
+
+    <div class="form-container">
+        <form id="projectForm">
+            <input type="text" id="projectTitle" placeholder="Enter title" required>
+            <textarea id="projectDetails" placeholder="Enter project details..." rows="5" required></textarea>
+            <button type="submit">Generate Comic Book</button>
+        </form>
+    </div>
+
+    <div class="spinner" id="loadingSpinner"></div>
+
+    <div class="output" id="outputSection"></div>
+
+    <script>
+        document.getElementById('projectForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const projectTitle = document.getElementById('projectTitle').value;
+            const projectDetails = document.getElementById('projectDetails').value;
+            const spinner = document.getElementById('loadingSpinner');
+            const outputSection = document.getElementById('outputSection');
+
+            if (!projectDetails) {
+                alert("Please enter project details!");
+                return;
+            }
+
+            // Show the spinner and clear the output section
+            spinner.style.display = 'block';
+            outputSection.innerHTML = '';
+
+            try {
+                // Send project details to the backend
+                const response = await fetch('/create-comic-book', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ projectDetails: projectDetails, title: projectTitle })
+                });
+
+                if (!response.ok) throw new Error('Failed to generate comic book');
+
+                const data = await response.json();
+
+                // Display the story and images
+                outputSection.innerHTML = `
+                    <h3>Generated Story:</h3>
+                    <p style='padding: 25px;
+    line-height: 25px;
+    font-size: 20px;
+    font-family: serif;
+    background: #a266a2;
+    color: #fff;'>${data.story}</p>
+                    <h3>Generated Comic Scenes:</h3>
+                    <div class="comic-grid">
+                `;
+
+                // Loop through the comic scenes and display them
+                data.comicScenes.forEach((scene, index) => {
+                    outputSection.innerHTML += `
+                        <div class="comic-scene">
+                            <img class="image" src="${scene.imageUrl}" alt="Scene ${index + 1}">
+                            <h4>${scene.sceneDescription}</h4>
+                        </div>
+                    `;
+                });
+
+                outputSection.innerHTML += '</div>';
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error generating comic book');
+            } finally {
+                // Hide the spinner
+                spinner.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
