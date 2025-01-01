@@ -1,20 +1,20 @@
 {
-  "name": "comic-generator",           // Name of the project
-  "version": "1.0.0",              // Version of the project
-  "description": "A simple Node.js app using Express for generating comic book", // Short description of the project
-  "main": "index.js",              // Entry point of the application
+  "name": "comic-generator",           
+  "version": "1.0.0",              
+  "description": "A simple Node.js app using Express for generating comic book",
+  "main": "index.js",             
   "scripts": {
-    "start": "node server.js",      // Command to start the app
+    "start": "node server.js",     
   },
   "dependencies": {
-    "dotenv": "^10.0.0",           // Package to load environment variables from .env file
-    "express": "^4.17.1"           // Web framework for building Node.js applications
+    "dotenv": "^10.0.0",           
+    "express": "^4.17.1"           
   },
   "devDependencies": {
   },
   "engines": {
-    "node": ">=14.0.0"             // Specifies the minimum version of Node.js required
+    "node": ">=18.0.0"             
   },
-  "author": "Rakesh Kumar",           // Author of the project
-  "license": "MIT"                 // License for the project
+  "author": "Rakesh Kumar",       
+  "license": "MIT"                
 }
