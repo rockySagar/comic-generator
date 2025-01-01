@@ -4,7 +4,7 @@
   "description": "A simple Node.js app using Express for generating comic book",
   "main": "index.js",             
   "scripts": {
-    "start": "node server.js",     
+    "start": "node server.js"
   },
   "dependencies": {
     "dotenv": "^10.0.0",           
